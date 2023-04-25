@@ -11,8 +11,8 @@ function App() {
       <Routes>
         <Route path="/"       element={<MainScreen />} />
         <Route path="/leaderboard" element={<LeaderboardScreen />} />
-        <Route path="/join"   element={<JoinScreen />} />
-        <Route path="/share"   element={<ShareScreen />} />
+        <Route path="/join/:ciphertext"   element={<JoinScreen />} />
+        <Route path="/share/"   element={<ShareScreen />} />
       </Routes>
     </Router>
   );
