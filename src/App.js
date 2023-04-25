@@ -1,24 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from "react";
+import JoinScreen from './pages/join';
+import MainScreen from './pages/main';
+import LeaderboardScreen from './pages/leaderboard';
+import ShareScreen from './pages/share';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/"       element={<MainScreen />} />
+        <Route path="/leaderboard" element={<LeaderboardScreen />} />
+        <Route path="/join"   element={<JoinScreen />} />
+        <Route path="/share"   element={<ShareScreen />} />
+      </Routes>
+    </Router>
   );
 }
 
