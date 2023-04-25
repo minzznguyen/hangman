@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 const words = [
   "apple",
@@ -17,13 +16,16 @@ function MainScreen() {
   const [guesses, setGuesses] = useState(new Set());
   const [correct, setCorrect] = useState(new Set());
   const [remainingGuesses, setRemainingGuesses] = useState(maxGuesses);
+  const [remainingChars, setRemainingChars] = useState(0);
 
+  // This function sets the initial state of the game to start a new round
   function newGame() {
     const newWord = words[Math.floor(Math.random() * words.length)];
     setWord(newWord);
     setGuesses(new Set());
     setCorrect(new Set());
     setRemainingGuesses(maxGuesses);
+    setRemainingChars(new Set(newWord).size);
   }
 
   function displayWord() {
@@ -38,7 +40,7 @@ function MainScreen() {
     }
     return <div>{display}</div>;
   }
-
+  // This function displays the letters that have already been guessed during gameplay
   function displayGuesses() {
     let display = "Guesses: ";
     for (const letter of guesses) {
@@ -48,16 +50,17 @@ function MainScreen() {
     return <div>{display}</div>;
   }
 
-  function checkGameOver() {
-    console.log(remainingGuesses, 'in checkGameOver')
+  // This useEffect hook checks if the game is over after every guess
+  useEffect(() => {
+    console.log('remainingChars = ', remainingChars)
     if (remainingGuesses === 0) {
       alert("Game over! The word was " + word);
       newGame();
-    } else if (correct.size === word.length) {
+    } else if (correct.size !== 0 && remainingChars === 0 ) {
       alert("You win!");
       newGame();
     }
-  }
+  }, [remainingGuesses, correct, word, remainingChars]);
 
   function guess(letter) {
     if (guesses.has(letter)) {
@@ -69,24 +72,15 @@ function MainScreen() {
     setGuesses(newGuesses);
 
     if (word.includes(letter)) {
+      setRemainingChars(remainingChars-1);
       const newCorrect = new Set(correct);
       newCorrect.add(letter);
       setCorrect(newCorrect);
     } else {
       setRemainingGuesses(remainingGuesses - 1);
     }
-    console.log(remainingGuesses)
-    checkGameOver();
   }
-
-  function handleKeyDown(event) {
-    console.log('keyPress')
-    const letter = event.key.toLowerCase();
-    if (letter.match(/[a-z]/)) {
-      guess(letter);
-    }
-  }
-  
+  //this part render the virtual keyboard component
   function renderKeyboard() {
     const letters = "abcdefghijklmnopqrstuvwxyz".split("");
     return (
