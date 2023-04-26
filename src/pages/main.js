@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./index.css";
 
 const words = [
   "apple",
@@ -38,7 +39,7 @@ function MainScreen() {
       }
       display += " ";
     }
-    return <div>{display}</div>;
+    return <div className="display-word">{display}</div>;
   }
   // This function displays the letters that have already been guessed during gameplay
   function displayGuesses() {
@@ -47,7 +48,7 @@ function MainScreen() {
       display += letter;
       display += " ";
     }
-    return <div>{display}</div>;
+    return <div className="display-guess">{display}</div>;
   }
 
   // This useEffect hook checks if the game is over after every guess
@@ -84,12 +85,13 @@ function MainScreen() {
   function renderKeyboard() {
     const letters = "abcdefghijklmnopqrstuvwxyz".split("");
     return (
-      <div>
+      <div className="keyword-btn-grp">
         {letters.map((letter) => (
           <button
             key={letter}
             onClick={() => guess(letter)}
             disabled={guesses.has(letter)}
+            className="keyword-btn"
           >
             {letter.toUpperCase()}
           </button>
@@ -99,19 +101,19 @@ function MainScreen() {
   }
 
   return (
-    <div>
-      <h1>Hangman</h1>
+    <div className="app-container">
+      <h1 className="hangman-heading">Hangman</h1>
       {word && displayWord()}
       {displayGuesses()}
       {remainingGuesses > 0 && correct.size < word.length && (
-        <div>Guess a letter:</div>
+        <div className="guess-letters">Guess a letter</div>
       )}
       {remainingGuesses > 0 && correct.size < word.length && (
         // <input type="text" onKeyDown={handleKeyDown} />
         renderKeyboard()
       )}
       {true && (
-        <button onClick={newGame}>New Game</button>
+        <button onClick={newGame} className="new-game-btn">New Game</button>
       )}
     </div>
   );
