@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;500&display=swap');
+
+.form-container {
+    font-family: 'Work Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+.form-container div {
+  margin: auto;
+}
+
+.form-container input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  font-size: 16px;
+}
+
+.form-container input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.form-container button {
+  margin: auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-container div {
+  margin-top: 15px;
+}
+
+.form-container .links {
+  font-size: medium;
+}
+
+.form-container a {
+  text-decoration: none;
+  margin: auto;
+  margin-top: 10px;
+  padding: 10px 10px 10px  10px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #0062cc;
+}
