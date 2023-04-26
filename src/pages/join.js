@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
+import "./index.css";
+
 function JoinScreen()  {
     //Decryption setup
     const key = CryptoJS.enc.Hex.parse('0123456789ABCDEF0123456789ABCDEF');
