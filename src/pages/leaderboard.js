@@ -1,8 +1,9 @@
 import "./index.css";
+import Leaderboard from "../components/Leaderboard";
 
 function LeaderboardScreen()  {
   return (
-    <div>leaderboard</div>
+    <div><Leaderboard /></div>
   )
 }
 
