@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;500&display=swap');
 
+.signup-page, .login-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5rem;
+  gap: 3rem;
+}
+
 .form-container {
     font-family: 'Work Sans', sans-serif;
     display: flex;
@@ -11,6 +20,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 24%) 0px 4px 9px;
   }
 
 .form-container div {
@@ -61,4 +71,18 @@
 
 .form-container button:hover {
   background-color: #0062cc;
+}
+
+.signup-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: rgb(0 0 0 / 24%) 0px 4px 9px;
+}
+
+.signup-cta, .signin-cta{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

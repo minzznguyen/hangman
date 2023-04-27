@@ -81,6 +81,8 @@ function Signup() {
     };
   
     return (
+      <div className="signup-page">
+        <h1 className="hangman-heading">Hangman</h1>
       <div className="form-container">
         <h1>Sign Up</h1>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -109,12 +111,15 @@ function Signup() {
               onChange={handleconfPasswordChange}
             />
           </div>
-          <button type="submit">Sign up</button>
+          <div className="signup-cta">
+          <button type="submit" className="signup-btn">Sign up</button>
+          </div>
           <div className='links'>
             <a href="./">Login</a>
             <a href="./forgot">Forgot Password?</a>
           </div>
         </form>
+      </div>
       </div>
     );
   }

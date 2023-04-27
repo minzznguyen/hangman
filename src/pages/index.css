@@ -66,7 +66,6 @@ body {
     font-size: 1rem;
     cursor: pointer;
     box-shadow: rgb(0 0 0 / 24%) 0px 4px 9px;
-    ;
 }
 
 .keyword-btn:hover {
@@ -76,3 +75,13 @@ body {
 .new-game-btn:hover {
     background-color: #7ed0ef;
 }
+
+.signup-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 5rem;
+    gap: 3rem;
+}
+
