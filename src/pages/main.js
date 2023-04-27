@@ -22,6 +22,9 @@ function MainScreen() {
   // This function sets the initial state of the game to start a new round
   function newGame() {
     const newWord = words[Math.floor(Math.random() * words.length)];
+    console.log('For testing purposes, ansewr is ', newWord)     //TODO: delete this
+
+
     setWord(newWord);
     setGuesses(new Set());
     setCorrect(new Set());
@@ -55,10 +58,13 @@ function MainScreen() {
   useEffect(() => {
     console.log('remainingChars = ', remainingChars)
     if (remainingGuesses === 0) {
-      alert("Game over! The word was " + word);
+      const score = calculateScore(remainingChars, remainingGuesses);
+      alert("Game over! The word was " + word + " You gained " + score + ' points!');
       newGame();
     } else if (correct.size !== 0 && remainingChars === 0 ) {
-      alert("You win!");
+      const score = calculateScore(remainingChars, remainingGuesses);
+      alert("You win! You gained " + score + ' points for this round');
+
       newGame();
     }
   }, [remainingGuesses, correct, word, remainingChars]);
@@ -98,6 +104,14 @@ function MainScreen() {
         ))}
       </div>
     );
+  }
+  function calculateScore( remainingChars, remainingGuesses) {
+    if (remainingChars === 0) { //win
+      return remainingGuesses * 10 + 100;
+    } else { //lose
+      return Math.floor((1 - remainingChars / word.length) * 70); // partial credit for wrong guesses
+  }
+
   }
 
   return (
