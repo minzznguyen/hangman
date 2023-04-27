@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import bcrypt from 'bcryptjs';
-import CryptoJS from 'crypto-js';
 import { Link } from "react-router-dom";
 import { generatePath } from 'react-router-dom';
 import "./index.css";
