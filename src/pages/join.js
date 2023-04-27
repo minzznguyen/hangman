@@ -46,6 +46,14 @@ function JoinScreen()  {
   
     // This useEffect hook checks if the game is over after every guess
     useEffect(() => {
+      function calculateScore( remainingChars, remainingGuesses) {
+        if (remainingChars === 0) { //win
+          return remainingGuesses * 10 + 100;
+        } else { //lose
+          return Math.floor((1 - remainingChars / word.length) * 70); // partial credit for wrong guesses
+      }
+    
+      }
       console.log('remainingChars = ', remainingChars)
       if (remainingGuesses === 0) {
         const score = calculateScore(remainingChars, remainingGuesses);
@@ -93,14 +101,7 @@ function JoinScreen()  {
         </div>
       );
     }
-    function calculateScore( remainingChars, remainingGuesses) {
-      if (remainingChars === 0) { //win
-        return remainingGuesses * 10 + 100;
-      } else { //lose
-        return Math.floor((1 - remainingChars / word.length) * 70); // partial credit for wrong guesses
-    }
-  
-    }
+    
   
     return (
       <div className="app-container">

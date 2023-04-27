@@ -16,7 +16,7 @@ function ShareScreen()  {
     
     const generateLink = () => {
         // const ciphertext = CryptoJS.AES.encrypt(input, key, { iv }).toString();
-        const encodedCiphertext = Base64.encode(input)
+        const encodedCiphertext = Base64.encode(input.toLowerCase())
         setHashcode(generatePath('/join/:encodedCiphertext', { encodedCiphertext }))
         console.log(generatePath('/join/:encodedCiphertext', { encodedCiphertext }))    
         console.log(encodedCiphertext)
