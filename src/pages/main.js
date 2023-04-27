@@ -1,15 +1,63 @@
 import React, { useEffect, useState } from "react";
+import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { db } from "../services/firebase"; 
 import "./index.css";
 
-const words = [
-  "apple",
-  "banana",
-  "orange",
-  "strawberry",
-  "blueberry",
-  "raspberry",
-];
+const wordRef = collection(db, 'Words');
 
+// Arrays of words for games grouped by difficulty
+let easyWords = [];
+let mediumWords = [];
+let hardWords = [];
+
+// Total games played in the current session
+let gamesPlayed = 0;
+
+// Generate the indexes used for each difficulty (0 -> max)
+function generateUniqueIndexes(max) {
+  let numbers = new Set();
+  
+  while (numbers.size < 5) {
+    let num = Math.floor(Math.random() * (max + 1));
+    numbers.add(num);
+  }
+  
+  return Array.from(numbers);
+}
+
+// Get the words for each difficulty level
+function generateWordArrays() {
+  getDocs(wordRef).then((querySnapshot) => {
+    console.log('------------------------------------');
+    querySnapshot.forEach((doc) => {
+      
+      // 0 - 19 => 20 words total for each difficulty level
+      generateUniqueIndexes(19).forEach((item) => {
+
+        easyWords.push(doc.data().easy[item]);
+        mediumWords.push(doc.data().medium[item]);
+        hardWords.push(doc.data().hard[item]);
+
+      })
+      //TODO: should remove this after debugging (displays all possible words)
+      console.log("Easy:  ");
+      console.log(easyWords);
+      console.log("Medium:  ");
+      console.log(mediumWords);
+      console.log("hard:  ");
+      console.log(hardWords);
+      console.log('------------------------------------');
+    });
+  });
+}
+generateWordArrays();
+
+
+//TODO: Add a selection function for the difficulty
+// Assign the appropriate array based on the aforementioned
+const words = easyWords;
+
+// Total number of guesses
 const maxGuesses = 6;
 
 function MainScreen() {
@@ -21,9 +69,8 @@ function MainScreen() {
 
   // This function sets the initial state of the game to start a new round
   function newGame() {
-    const newWord = words[Math.floor(Math.random() * words.length)];
-    console.log('For testing purposes, ansewr is ', newWord)     //TODO: delete this
-
+    const newWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
+    console.log('For testing purposes, answer is ', newWord)     //TODO: delete this
 
     setWord(newWord);
     setGuesses(new Set());
