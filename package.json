@@ -9,7 +9,8 @@
     "base64url": "^3.0.1",
     "buffer": "^6.0.3",
     "firebase": "^9.20.0",
-    "firebase-tools": "^11.29.0",
+    "firebase-tools": "^11.29.1",
+    "fly": "^4.5.5",
     "js-base64": "^3.7.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,7 +19,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
