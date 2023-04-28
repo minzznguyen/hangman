@@ -77,8 +77,6 @@ function MainScreen() {
     // Get the leaderboard container
     const leaderboard = document.querySelector(".leaderboard-container");
 
-
-
     if(leaderboard != null) {
       leaderboard.classList.toggle("hide-element");
     }
@@ -89,9 +87,6 @@ function MainScreen() {
     // Display the difficulty buttons when the "New Game" button is clicked
     setShowDifficultyButtons(true);
     self.className = "hide-element";
-
-    toggleLeaderBoard();
-
   }
 
   function setDifficulty() {
