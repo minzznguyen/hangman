@@ -101,6 +101,12 @@ function MainScreen() {
     return <div className="display-guess">{display}</div>;
   }
 
+  // This function will give hints for the player
+  function giveHints() {
+    
+
+  }
+
   // This useEffect hook checks if the game is over after every guess
   useEffect(() => {
 
@@ -153,15 +159,28 @@ function MainScreen() {
       setRemainingGuesses(remainingGuesses - 1);
     }
   }
+
   //this part render the virtual keyboard component
   function renderKeyboard() {
     const letters = "abcdefghijklmnopqrstuvwxyz".split("");
+    let letterColor = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+    function handleClick(button, letter) {
+
+      console.log('Button key:', letter);
+
+      button.className = 'used-btn';
+
+      guess(letter);
+      
+    }
+
     return (
       <div className="keyword-btn-grp">
         {letters.map((letter) => (
           <button
             key={letter}
-            onClick={() => guess(letter)}
+            onClick={(event) => handleClick(event.target, letter)}
             disabled={guesses.has(letter)}
             className="keyword-btn"
           >
