@@ -3,6 +3,7 @@ import { doc, getDoc, getDocs, collection, updateDoc, FieldValue } from 'firebas
 import { db } from "../services/firebase"; 
 import "./index.css";
 import Leaderboard from "../components/Leaderboard";
+import { diff } from "jest-diff";
 const wordRef = collection(db, 'Words');
 
 // Arrays of words for games grouped by difficulty
@@ -12,6 +13,9 @@ let mediumWords = [];
 let mediumDefines = [];
 let hardWords = [];
 let hardDefines = [];
+
+// Get the difficulty from local storage -> default to easy
+let difficulty =  localStorage.getItem('difficulty') || "easy";
 
 // Total games played in the current session
 let gamesPlayed = 0;
@@ -30,13 +34,21 @@ function generateUniqueIndexes(max) {
 
 // Get the words for each difficulty level
 function generateWordArrays() {
+
+  // Empty the arrays
+  easyWords = [];
+  easyDefines = [];
+  mediumWords = [];
+  mediumDefines = [];
+  hardWords = [];
+  hardDefines = [];
+
   getDocs(wordRef).then((querySnapshot) => {
     console.log('------------------------------------');
     querySnapshot.forEach((doc) => {
 
       // 0 - 19 => 20 words total for each difficulty level
       generateUniqueIndexes(19).forEach((item) => {
-
         easyWords.push(doc.data().easy[item]);
         easyDefines.push(doc.data().easyDefs[item]);
         mediumWords.push(doc.data().medium[item]);
@@ -57,10 +69,9 @@ function generateWordArrays() {
 }
 generateWordArrays();
 
-
 //TODO: Add a selection function for the difficulty
-const words = easyWords;
-const definitions = easyDefines;
+let words = [];
+let definitions = [];
 let currDefinition = "";
 
 // Total number of guesses
@@ -72,12 +83,63 @@ function MainScreen() {
   const [correct, setCorrect] = useState(new Set());
   const [remainingGuesses, setRemainingGuesses] = useState(maxGuesses);
   const [remainingChars, setRemainingChars] = useState(0);
+  const [showDifficultyButtons, setShowDifficultyButtons] = useState(false);
+
+  function handleNewGameClick(self) {
+    // Display the difficulty buttons when the "New Game" button is clicked
+    setShowDifficultyButtons(true);
+    self.className = "hide-element";
+
+  }
+
+  function setDifficulty() {
+    let diffy = localStorage.getItem('difficulty');
+
+    if(diffy === "easy") {
+      words = easyWords;
+      definitions = easyDefines;
+    }
+    else if(diffy === "medium") {
+      words = mediumWords;
+      definitions = mediumDefines;
+    }
+    else {
+      words = hardWords;
+      definitions = hardDefines;
+    }
+  }
+
+  function difficultyButtonClick(diffy) {
+    setShowDifficultyButtons(false);
+
+    // Save to local storage
+    difficulty = diffy;
+    localStorage.setItem('difficulty', difficulty);
+
+    setDifficulty();
+
+    newGame();
+  }
 
   // This function sets the initial state of the game to start a new round
   function newGame() {
     let randomIndex = Math.floor(Math.random() * words.length);
     const newWord = words[randomIndex].toLowerCase();
     const newDef = definitions[randomIndex];
+
+    // Remove the selected index from the arrays
+    words.splice(randomIndex, 1);
+    definitions.splice(randomIndex, 1);
+
+    if(words.length == 0) {
+      generateWordArrays();
+      setDifficulty();
+    }
+
+    console.log(words);             //TODO: remove when finished debugging
+    console.log(definitions);       //TODO: remove when finished debugging
+
+    // Set the current definition to the new definition
     currDefinition = newDef;
     console.log('For testing purposes, answer is ', newWord);        //TODO: delete this after testing
     console.log('Definition: ', newDef);                             //TODO: delete this after testing
@@ -254,7 +316,19 @@ function MainScreen() {
         Keyboard()
       )}
       {true && (
-        <button onClick={newGame} className="new-game-btn">New Game</button>
+        <div>
+        {/* Conditionally render the new buttons */}
+        {showDifficultyButtons && (
+          <div className="difficulty-btn-group">
+            <button onClick={() => difficultyButtonClick("easy")} className="game-btn">Easy</button><br></br>
+            <button onClick={() => difficultyButtonClick("medium")} className="game-btn">Medium</button><br></br>
+            <button onClick={() => difficultyButtonClick("hard")} className="game-btn">Hard</button>
+          </div>
+        )}
+  
+        {/* Render the "New Game" button */}
+        <button onClick={(event) => handleNewGameClick(event.target)} className="new-game-btn">New Game</button>
+      </div>
       )}
     </div>
   );
