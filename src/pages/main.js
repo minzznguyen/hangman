@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
 import "./index.css";
 
@@ -103,6 +103,14 @@ function MainScreen() {
 
   // This useEffect hook checks if the game is over after every guess
   useEffect(() => {
+
+    // Update the players score in the Database
+    async function uploadPlayerScore(newScore) {
+      const playerRef = doc(db, 'Players', localStorage.getItem('username'));
+      await updateDoc(playerRef, { scores: arrayUnion(newScore) }, { merge: true });
+      console.log("Score uploaded successfully.");
+    }
+
     console.log('remainingChars = ', remainingChars)
     if (remainingGuesses === 0) {
       const score = calculateScore(remainingChars, remainingGuesses);
@@ -111,7 +119,11 @@ function MainScreen() {
     } else if (correct.size !== 0 && remainingChars === 0 ) {
       const score = calculateScore(remainingChars, remainingGuesses);
       alert("You win! You gained " + score + ' points for this round');
+      
+      // Add the players score to the db
+      uploadPlayerScore(score);
 
+      // Begin a new game
       newGame();
     }
   }, [remainingGuesses, correct, word, remainingChars]);
