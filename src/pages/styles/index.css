@@ -6,17 +6,33 @@
     box-sizing: border-box;
 }
 
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Firefox */
+* {
+    scrollbar-width: none;
+}
+
 body {
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
     background-color: #e6f6fc;
 }
 
 .app-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 1rem;
     padding: 2rem;
+    top: 10%;
 }
 
 .display-word {

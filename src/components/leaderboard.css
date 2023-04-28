@@ -1,39 +1,40 @@
 .leaderboard-container {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .leaderboard-table {
-    background-color: #d5f4ffce;
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ccc;
-    margin-top: 20px;
+  height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.leaderboard-table {
+  background-color: #d5f4ffce;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  margin-top: 20px;
 }
 .leaderboard-table.update {
   background-color: #beeeff;
 }
 
-  
-  .leaderboard-table th,
-  .leaderboard-table td {
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .leaderboard-table th {
-    background-color: #f2f2f2;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .leaderboard-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  .leaderboard-table.leaderboard-table.update tr:nth-child(even) {
-    background-color: #d2d2d2;
-  }
-  
-  .leaderboard-table tr:hover {
-    background-color: #ddd;
-  }
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.leaderboard-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.leaderboard-table.leaderboard-table.update tr:nth-child(even) {
+  background-color: #d2d2d2;
+}
+
+.leaderboard-table tr:hover {
+  background-color: #ddd;
+}

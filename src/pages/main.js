@@ -16,9 +16,6 @@ let hardDefines = [];
 // Get the difficulty from local storage -> default to easy
 let difficulty =  localStorage.getItem('difficulty') || "easy";
 
-// Total games played in the current session
-let gamesPlayed = 0;
-
 // Generate the indexes used for each difficulty (0 -> max)
 function generateUniqueIndexes(max) {
   let numbers = new Set();
@@ -55,20 +52,12 @@ function generateWordArrays() {
         hardWords.push(doc.data().hard[item]);
         hardDefines.push(doc.data().hardDefs[item]);
       })
-      //TODO: should remove this after debugging (displays all possible words)
-      console.log("Easy:  ");
-      console.log(easyWords);
-      console.log("Medium:  ");
-      console.log(mediumWords);
-      console.log("hard:  ");
-      console.log(hardWords);
-      console.log('------------------------------------');
     });
   });
 }
 generateWordArrays();
 
-//TODO: Add a selection function for the difficulty
+// Current word list and their definitions
 let words = [];
 let definitions = [];
 let currDefinition = "";
@@ -84,10 +73,24 @@ function MainScreen() {
   const [remainingChars, setRemainingChars] = useState(0);
   const [showDifficultyButtons, setShowDifficultyButtons] = useState(false);
 
+  function toggleLeaderBoard() {
+    // Get the leaderboard container
+    const leaderboard = document.querySelector(".leaderboard-container");
+
+
+
+    if(leaderboard != null) {
+      leaderboard.classList.toggle("hide-element");
+    }
+  }
+
+
   function handleNewGameClick(self) {
     // Display the difficulty buttons when the "New Game" button is clicked
     setShowDifficultyButtons(true);
     self.className = "hide-element";
+
+    toggleLeaderBoard();
 
   }
 
@@ -116,7 +119,6 @@ function MainScreen() {
     localStorage.setItem('difficulty', difficulty);
 
     setDifficulty();
-
     newGame();
   }
 
@@ -135,13 +137,8 @@ function MainScreen() {
       setDifficulty();
     }
 
-    console.log(words);             //TODO: remove when finished debugging
-    console.log(definitions);       //TODO: remove when finished debugging
-
     // Set the current definition to the new definition
     currDefinition = newDef;
-    console.log('For testing purposes, answer is ', newWord);        //TODO: delete this after testing
-    console.log('Definition: ', newDef);                             //TODO: delete this after testing
 
     setWord(newWord);
     setGuesses(new Set());
@@ -185,15 +182,6 @@ function MainScreen() {
       display += " ";
     }
     return <div className="display-word">{display}</div>;
-  }
-  // This function displays the letters that have already been guessed during gameplay
-  function displayGuesses() {
-    let display = "Guesses: ";
-    for (const letter of guesses) {
-      display += letter;
-      display += " ";
-    }
-    return <div className="display-guess">{display}</div>;
   }
 
   // This function will give hints for the player
@@ -260,13 +248,8 @@ function MainScreen() {
     const letters = "qwertyuiopasdfghjklzxcvbnm".split("");
 
     function handleClick(button, letter) {
-
-      console.log('Button key:', letter);
-
       button.className = 'used-btn';
-
       guess(letter);
-      
     }
 
     return (
@@ -308,10 +291,6 @@ function MainScreen() {
         </p>
       </div>
       {remainingGuesses > 0 && correct.size < word.length && (
-        <div className="guess-letters"></div>
-      )}
-      {remainingGuesses > 0 && correct.size < word.length && (
-        // <input type="text" onKeyDown={handleKeyDown} />
         Keyboard()
       )}
       {true && (
@@ -329,6 +308,7 @@ function MainScreen() {
         <button onClick={(event) => handleNewGameClick(event.target)} className="new-game-btn">New Game</button>
       </div>
       )}
+      <button onClick={() => toggleLeaderBoard()} className="game-btn">Display Leaderboard</button>
       <Leaderboard />
     </div>
   );
