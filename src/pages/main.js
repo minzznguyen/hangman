@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { doc, getDoc, getDocs, collection, updateDoc, FieldValue } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
 import "./styles/index.css";
 import Leaderboard from "../components/Leaderboard";
+import ShareScreen from '../pages/share';
 const wordRef = collection(db, 'Words');
 
 // Arrays of words for games grouped by difficulty
@@ -82,11 +84,19 @@ function MainScreen() {
     }
   }
 
+  function shareButton() {
+    return (
+      <Link to="/share">
+        <button className="share-btn game-btn">Share Your Word</button>
+      </Link>
+    );
+  }
+
 
   function handleNewGameClick(self) {
     // Display the difficulty buttons when the "New Game" button is clicked
     setShowDifficultyButtons(true);
-    self.className = "hide-element";
+    self.classList.toggle("hide-element");
   }
 
   function setDifficulty() {
@@ -303,6 +313,7 @@ function MainScreen() {
         <button onClick={(event) => handleNewGameClick(event.target)} className="new-game-btn">New Game</button>
       </div>
       )}
+       {shareButton()}
       <button onClick={() => toggleLeaderBoard()} className="game-btn">Display Leaderboard</button>
       <Leaderboard />
     </div>
@@ -310,4 +321,3 @@ function MainScreen() {
 }
 
 export default MainScreen;
-

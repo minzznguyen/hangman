@@ -13,6 +13,12 @@ function ShareScreen()  {
 
     
     const generateLink = () => {
+      if(input == "")
+        return;
+
+        const shareLink = document.querySelector('.hide-element');
+        if(shareLink != null)
+          shareLink.classList.toggle('hide-element');
         // const ciphertext = CryptoJS.AES.encrypt(input, key, { iv }).toString();
         const encodedCiphertext = Base64.encode(input.toLowerCase())
         setHashcode(generatePath('/join/:encodedCiphertext', { encodedCiphertext }))
@@ -21,11 +27,15 @@ function ShareScreen()  {
     
     } 
   return (
-    <div>
+    <div className='share-container'>
+      <h1 className='share-title'>Create your own!</h1>
         <input value={input} onChange={event => {setInput(event.target.value)}}/>
-        <button type='submit' onClick={generateLink}>submit</button>
-        <p></p>
-        <Link to={hashcode}>share this link</Link>
+        <div className='space-btn'>
+          <button className='share-btn' type='submit' onClick={generateLink}>submit</button>
+        </div>
+        <div className='share-box hide-element'>
+          <Link className='share-link ' to={hashcode} style={{ textDecoration: 'none' }} >https://hang-man-three.vercel.app/{hashcode}</Link>
+        </div>
     </div>
   )
 }
