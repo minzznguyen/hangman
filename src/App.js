@@ -7,7 +7,6 @@ import ShareScreen from './pages/share';
 import LoginScreen from './pages/login';
 import ForgotPassScreen from './pages/forgotPassword';
 import SignupScreen from './pages/signup';
-
 function App() {
   return (
     <Router>
@@ -17,7 +16,7 @@ function App() {
         <Route path="/forgot"       element={<ForgotPassScreen />} />
         <Route path="/signup"       element={<SignupScreen />} />
         <Route path="/leaderboard" element={<LeaderboardScreen />} />
-        <Route path="/join/:ciphertext"   element={<JoinScreen />} />
+        <Route path="/join/:encodedCiphertext"   element={<JoinScreen />} />
         <Route path="/share/"   element={<ShareScreen />} />
       </Routes>
     </Router>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
 import "./index.css";
-
+import Leaderboard from "../components/Leaderboard";
 const wordRef = collection(db, 'Words');
 
 // Arrays of words for games grouped by difficulty
@@ -16,12 +16,12 @@ let gamesPlayed = 0;
 // Generate the indexes used for each difficulty (0 -> max)
 function generateUniqueIndexes(max) {
   let numbers = new Set();
-  
+
   while (numbers.size < 5) {
     let num = Math.floor(Math.random() * (max + 1));
     numbers.add(num);
   }
-  
+
   return Array.from(numbers);
 }
 
@@ -30,7 +30,7 @@ function generateWordArrays() {
   getDocs(wordRef).then((querySnapshot) => {
     console.log('------------------------------------');
     querySnapshot.forEach((doc) => {
-      
+
       // 0 - 19 => 20 words total for each difficulty level
       generateUniqueIndexes(19).forEach((item) => {
 

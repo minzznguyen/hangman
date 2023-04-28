@@ -1,23 +1,24 @@
 import React, { useState } from 'react'
-import bcrypt from 'bcryptjs';
-import CryptoJS from 'crypto-js';
 import { Link } from "react-router-dom";
 import { generatePath } from 'react-router-dom';
 import "./index.css";
 
 function ShareScreen()  {
     //Encryption setup
-    const key = CryptoJS.enc.Hex.parse('0123456789ABCDEF0123456789ABCDEF');
-    const iv = CryptoJS.enc.Hex.parse('0123456789ABCDEF');
+    const {Base64} = require('js-base64');
+
     
     const [input, setInput] = useState("")
     const [hashcode, setHashcode] = useState("")
 
     
     const generateLink = () => {
-        const ciphertext = CryptoJS.AES.encrypt(input, key, { iv }).toString();
-        setHashcode(generatePath('/join/:ciphertext', { ciphertext }))
-        console.log(generatePath('/join/:ciphertext', { ciphertext }))        
+        // const ciphertext = CryptoJS.AES.encrypt(input, key, { iv }).toString();
+        const encodedCiphertext = Base64.encode(input.toLowerCase())
+        setHashcode(generatePath('/join/:encodedCiphertext', { encodedCiphertext }))
+        console.log(generatePath('/join/:encodedCiphertext', { encodedCiphertext }))    
+        console.log(encodedCiphertext)
+    
     } 
   return (
     <div>
