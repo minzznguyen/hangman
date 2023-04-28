@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, updateDoc, FieldValue } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
 import "./index.css";
 import Leaderboard from "../components/Leaderboard";
@@ -106,15 +106,22 @@ function MainScreen() {
 
     // Update the players score in the Database
     async function uploadPlayerScore(newScore) {
-      const playerRef = doc(db, 'Players', localStorage.getItem('username'));
-      await updateDoc(playerRef, { scores: arrayUnion(newScore) }, { merge: true });
-      console.log("Score uploaded successfully.");
+      const playerRef = doc(db, 'Players', localStorage.getItem("username"));
+      const playerDoc = await getDoc(playerRef);
+      const existingScores = playerDoc.data().scores || [];
+      const updatedScores = [...existingScores, newScore];
+      await updateDoc(playerRef, { scores: updatedScores }, { merge: true });
+      console.log("Added Score: " + newScore + ", Player: " + localStorage.getItem("username"));
     }
 
     console.log('remainingChars = ', remainingChars)
     if (remainingGuesses === 0) {
       const score = calculateScore(remainingChars, remainingGuesses);
       alert("Game over! The word was " + word + " You gained " + score + ' points!');
+
+      // Add the players score to the db
+      uploadPlayerScore(score);
+
       newGame();
     } else if (correct.size !== 0 && remainingChars === 0 ) {
       const score = calculateScore(remainingChars, remainingGuesses);
