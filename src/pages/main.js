@@ -7,8 +7,11 @@ const wordRef = collection(db, 'Words');
 
 // Arrays of words for games grouped by difficulty
 let easyWords = [];
+let easyDefines = [];
 let mediumWords = [];
+let mediumDefines = [];
 let hardWords = [];
+let hardDefines = [];
 
 // Total games played in the current session
 let gamesPlayed = 0;
@@ -35,9 +38,11 @@ function generateWordArrays() {
       generateUniqueIndexes(19).forEach((item) => {
 
         easyWords.push(doc.data().easy[item]);
+        easyDefines.push(doc.data().easyDefs[item]);
         mediumWords.push(doc.data().medium[item]);
+        mediumDefines.push(doc.data().mediumDefs[item]);
         hardWords.push(doc.data().hard[item]);
-
+        hardDefines.push(doc.data().hardDefs[item]);
       })
       //TODO: should remove this after debugging (displays all possible words)
       console.log("Easy:  ");
@@ -54,8 +59,9 @@ generateWordArrays();
 
 
 //TODO: Add a selection function for the difficulty
-// Assign the appropriate array based on the aforementioned
 const words = easyWords;
+const definitions = easyDefines;
+let currDefinition = "";
 
 // Total number of guesses
 const maxGuesses = 6;
@@ -69,8 +75,12 @@ function MainScreen() {
 
   // This function sets the initial state of the game to start a new round
   function newGame() {
-    const newWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
-    console.log('For testing purposes, answer is ', newWord)     //TODO: delete this
+    let randomIndex = Math.floor(Math.random() * words.length);
+    const newWord = words[randomIndex].toLowerCase();
+    const newDef = definitions[randomIndex];
+    currDefinition = newDef;
+    console.log('For testing purposes, answer is ', newWord);        //TODO: delete this after testing
+    console.log('Definition: ', newDef);                             //TODO: delete this after testing
 
     setWord(newWord);
     setGuesses(new Set());
@@ -82,13 +92,24 @@ function MainScreen() {
     const hintElement = document.querySelector(".hint-box");
     hintElement.classList.remove("hide-element");
 
+    const defDisplay = hintElement.querySelector(".word-definition-show");
+
+    // Reset the definition button
+    if (defDisplay != null) {
+      defDisplay.classList.remove("word-definition-show");
+      defDisplay.classList.add("word-definition-hidden");
+      defDisplay.innerHTML = "View Definition";
+    }
+   
     // Reset the keys to unpressed
     const keyboardKeys = document.querySelector(".keyword-btn-grp");
 
-    if(keyboardKeys != null) 
+    if(keyboardKeys != null) {
+
       for (let i = 0; i < keyboardKeys.children.length; i++) {
         keyboardKeys.children[i].className ="keyword-btn";
       }
+    }
 
   }
 
@@ -115,9 +136,9 @@ function MainScreen() {
   }
 
   // This function will give hints for the player
-  function giveHints() {
-    
-
+  function giveHint(item) {
+    item.innerHTML = currDefinition;
+    item.className= "word-definition-show";
   }
 
   // This useEffect hook checks if the game is over after every guess
@@ -218,7 +239,12 @@ function MainScreen() {
       <h1 className="hangman-heading">Hangman</h1>
       {word && displayWord()}
       <div className="hint-box hide-element">
-        <p className="word-definition-hidden">View Definition</p><br></br>
+        <p 
+        className="word-definition word-definition-hidden"
+        onClick={(event) => giveHint(event.target)}
+        >
+          View Definition
+        </p>
       </div>
       {remainingGuesses > 0 && correct.size < word.length && (
         <div className="guess-letters"></div>
