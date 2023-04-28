@@ -77,6 +77,19 @@ function MainScreen() {
     setCorrect(new Set());
     setRemainingGuesses(maxGuesses);
     setRemainingChars(new Set(newWord).size);
+
+    // Remove the "hide-element" class from the element
+    const hintElement = document.querySelector(".hint-box");
+    hintElement.classList.remove("hide-element");
+
+    // Reset the keys to unpressed
+    const keyboardKeys = document.querySelector(".keyword-btn-grp");
+
+    if(keyboardKeys != null) 
+      for (let i = 0; i < keyboardKeys.children.length; i++) {
+        keyboardKeys.children[i].className ="keyword-btn";
+      }
+
   }
 
   function displayWord() {
@@ -161,9 +174,8 @@ function MainScreen() {
   }
 
   //this part render the virtual keyboard component
-  function renderKeyboard() {
-    const letters = "abcdefghijklmnopqrstuvwxyz".split("");
-    let letterColor = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  function Keyboard() {
+    const letters = "qwertyuiopasdfghjklzxcvbnm".split("");
 
     function handleClick(button, letter) {
 
@@ -177,16 +189,18 @@ function MainScreen() {
 
     return (
       <div className="keyword-btn-grp">
-        {letters.map((letter) => (
-          <button
-            key={letter}
-            onClick={(event) => handleClick(event.target, letter)}
-            disabled={guesses.has(letter)}
-            className="keyword-btn"
-          >
-            {letter.toUpperCase()}
-          </button>
-        ))}
+        {letters.map((letter) => 
+          (
+            <button
+              key={letter}
+              onClick={(event) => handleClick(event.target, letter)}
+              disabled={guesses.has(letter)}
+              className="keyword-btn"
+            >
+              {letter.toUpperCase()}
+            </button>
+          )
+        )}
       </div>
     );
   }
@@ -203,13 +217,15 @@ function MainScreen() {
     <div className="app-container">
       <h1 className="hangman-heading">Hangman</h1>
       {word && displayWord()}
-      {displayGuesses()}
+      <div className="hint-box hide-element">
+        <p className="word-definition-hidden">View Definition</p><br></br>
+      </div>
       {remainingGuesses > 0 && correct.size < word.length && (
-        <div className="guess-letters">Guess a letter</div>
+        <div className="guess-letters"></div>
       )}
       {remainingGuesses > 0 && correct.size < word.length && (
         // <input type="text" onKeyDown={handleKeyDown} />
-        renderKeyboard()
+        Keyboard()
       )}
       {true && (
         <button onClick={newGame} className="new-game-btn">New Game</button>
