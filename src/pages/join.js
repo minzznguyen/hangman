@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom';
-import "./index.css";
+import "./styles/index.css";
 
 
 const maxGuesses = 6;

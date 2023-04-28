@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { doc, getDoc, getDocs, collection, updateDoc, FieldValue } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
-import "./index.css";
+import "./styles/index.css";
 import Leaderboard from "../components/Leaderboard";
-import { diff } from "jest-diff";
 const wordRef = collection(db, 'Words');
 
 // Arrays of words for games grouped by difficulty

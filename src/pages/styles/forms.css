@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;500&display=swap');
 
-.signup-page, .login-page{
+.signup-page, .login-page, .forgot-page{
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   flex-direction: column;
   padding: 5rem;
   gap: 3rem;

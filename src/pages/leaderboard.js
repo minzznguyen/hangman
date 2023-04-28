@@ -1,4 +1,4 @@
-import "./index.css";
+import "./styles/index.css";
 import Leaderboard from "../components/Leaderboard";
 
 function LeaderboardScreen()  {

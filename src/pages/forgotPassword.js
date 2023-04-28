@@ -78,6 +78,8 @@ function ForgotPassword() {
     };
   
     return (
+      <div className='forgot-page'>
+      <h1 className="hangman-heading">Hangman</h1>
       <div className="form-container">
         <h1>Forgot Password</h1>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -112,6 +114,7 @@ function ForgotPassword() {
             <a href="./signup">Sign Up</a>
           </div>
         </form>
+      </div>
       </div>
     );
   }
