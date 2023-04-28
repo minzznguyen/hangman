@@ -1,49 +1,61 @@
- import React, { useState, useEffect } from "react";
- import './leaderboard.css';
+import React, { useState, useEffect } from "react";
+import './leaderboard.css';
+import { db } from "../services/firebase.js";
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
 function Leaderboard() {
-  const [users, setUsers] = useState([
-    { id: 1, username: "Alice", gamesPlayed: 5, totalScore: 100 },
-    { id: 2, username: "Bob", gamesPlayed: 7, totalScore: 150 },
-    { id: 3, username: "Charlie", gamesPlayed: 10, totalScore: 200 },
-    { id: 4, username: "David", gamesPlayed: 3, totalScore: 75 },
-    { id: 5, username: "Eve", gamesPlayed: 8, totalScore: 125 },
-  ]);
+  const [users, loading, error] = useCollection(
+    query(collection(db, "Players")),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
+  useEffect(() => {
+    setTableUpdate(true);
+    setTimeout(() => {
+      setTableUpdate(false);
+    }, [300])
+  }, [users])
 
-//   useEffect(() => {
-//     // fetch users data from API or database
-//     const fetchUsers = async () => {
-//       const response = await fetch("api/users");
-//       const data = await response.json();
-//       setUsers(data);
-//     };
+  const usersData = users?.docs.map(doc => ({
+    id: doc.id,
+    username: doc.id,
+    gamesPlayed: doc.data().scores ? doc.data().scores.length : 0,
+    totalScore: doc.data().scores ? doc.data().scores.reduce((a, b) => a + b, 0) : 0,
+    averageScore: doc.data().scores && doc.data().scores.length > 0 ? (doc.data().scores.reduce((a, b) => a + b, 0) / doc.data().scores.length).toFixed(2) : 0,
+  })).sort((a, b) => b.totalScore - a.totalScore).slice(0, 30);
 
-//     fetchUsers();
-//   }, []);
+  const [tableUpdate, setTableUpdate] = useState(false);
 
-
-return (
-  <div className="leaderboard-container">
-    <h1>Leaderboard</h1>
-    <table className="leaderboard-table">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Games Played</th>
-          <th>Total Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => (
-          <tr key={user.id}>
-            <td>{user.username}</td>
-            <td>{user.gamesPlayed}</td>
-            <td>{user.totalScore}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+  return (
+    <div className="leaderboard-container">
+      <h1>Leaderboard</h1>
+      {error && <p>Error fetching leaderboard data</p>}
+      {loading && <p>Loading leaderboard data...</p>}
+      {!loading && !error && (
+        <table className={`leaderboard-table ${tableUpdate? 'update' : ''}`} >
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Games Played</th>
+              <th>Total Score</th>
+              <th>Average Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersData.map((user) => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td>{user.gamesPlayed}</td>
+                <td>{user.totalScore}</td>
+                <td>{user.averageScore}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
 }
 
 export default Leaderboard;

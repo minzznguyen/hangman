@@ -117,8 +117,8 @@ function MainScreen() {
       const existingScores = playerDoc.data().scores || [];
       const updatedScores = [...existingScores, newScore];
       await updateDoc(playerRef, { scores: updatedScores }, { merge: true });
-      console.log("Added Score: " + newScore + ", Player: " + localStorage.getItem("username"));
-    }
+      console.log("Added Score: " + newScore + ", Player: " +
+       localStorage.getItem("username") + ", Score List: " + updatedScores);    }
 
     console.log('remainingChars = ', remainingChars)
     if (remainingGuesses === 0) {
@@ -214,6 +214,7 @@ function MainScreen() {
       {true && (
         <button onClick={newGame} className="new-game-btn">New Game</button>
       )}
+      <Leaderboard />
     </div>
   );
 }
