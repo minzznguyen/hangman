@@ -4,11 +4,16 @@
   }
   
   .leaderboard-table {
+    background-color: #d5f4ffce;
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ccc;
     margin-top: 20px;
-  }
+}
+.leaderboard-table.update {
+  background-color: #beeeff;
+}
+
   
   .leaderboard-table th,
   .leaderboard-table td {
@@ -25,8 +30,10 @@
   .leaderboard-table tr:nth-child(even) {
     background-color: #f2f2f2;
   }
+  .leaderboard-table.leaderboard-table.update tr:nth-child(even) {
+    background-color: #d2d2d2;
+  }
   
   .leaderboard-table tr:hover {
     background-color: #ddd;
   }
-  
